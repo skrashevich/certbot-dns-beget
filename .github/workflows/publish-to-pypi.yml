@@ -11,7 +11,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        target: ['3.7','3.8','3.9','3.10','3.11']
+      fail-fast: false
     steps:
     - name: Check out code
       uses: actions/checkout@v2
@@ -19,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7  # Choose the Python version you need
+        python-version: ${{ matrix.target }} 
 
     - name: Install dependencies
       run: |
