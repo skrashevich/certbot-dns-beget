@@ -7,6 +7,6 @@
 # in --editable mode (-e), just "pip install certbot-dns-beget[docs]" does not work as
 # expected and "pip install -e certbot-dns-beget[docs]" must be used instead
 
--e acme
--e certbot
--e certbot-dns-beget[docs]
+# We also pin our dependencies for increased stability.
+
+-e ".[docs]"
