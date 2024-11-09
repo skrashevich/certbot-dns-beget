@@ -83,8 +83,12 @@ class _BegetClient(object):
         domainList = self._beget_api('/domain/getList', input_data)
         if domainList['status'] == 'success':
             for _domain in domainList['result']:
-                if _domain['fqdn'] == domain_name:
+                if domain_name.endswith(_domain['fqdn']):
                     domain = _domain
+
+            if domain == {}:
+                logger.error('The specified domain belonging to the Beget account could not be found')
+                raise errors.PluginError('The specified domain belonging to the Beget account could not be found')
 
             subdomainList = self._beget_api('/domain/getSubdomainList', input_data)
 
@@ -97,7 +101,7 @@ class _BegetClient(object):
                         isExist = True
                         break
             
-            subdomain = record_name.replace('.' + domain_name, '')
+            subdomain = record_name.replace('.' + domain['fqdn'], '')
             if isExist == False:
                 input_data = {
                     'subdomain' : subdomain,
